@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil - Mon Blog & Boutique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            {% load static %}
+            <img src="{% static 'images/im1.jpg' %}" alt="Accueil" height="40">
+
+
+            <a class="navbar-brand" href="{% url 'accueil' %}">OUEDRAOGO D.Savio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'liste_formations' %}">Formations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'liste_sessions' %}">Sessions</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'liste_produits' %}">Boutique</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PRESENTATION -->
+    <section class="container mt-5">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold">Bienvenu sur le blog de Ouedraogo Dominique Savio</h1>
+            <p class="text-muted fs-5">
+                Je suis Développeur, Formateur, Entrepreneur en Informatique
+
+            </p>
+            <h2 class="fw-bold">Etudiant en licence 3 en informatique à l'université Thomas SANKARA</h2>
+            <h1 class="fw-bold">Voici mes competances réparties en trois branches</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">💻 Développement informatique</h5>
+                        <p class="card-text">
+                            Conception d’applications web professionnelles avec Django (Python), développement de sites web modernes, sécurisés et responsives. Maîtrise de HTML, CSS, Bootstrap, JavaScript et bases de données.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">🎓 Formation en informatique</h5>
+                        <p class="card-text">
+                            Formation pratique en programmation, développement web et informatique générale. Approche pédagogique claire, progressive et orientée projets réels.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">🛒 Vente et solutions numériques</h5>
+                        <p class="card-text">
+                            Vente de produits et services informatiques, conseils en solutions numériques et accompagnement technique pour particuliers et entreprises.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARTICLES -->
+    <section class="container mt-5">
+        <h2 class="mb-4">📰 Articles récents</h2>
+        <div class="row">
+            {% for article in articles %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    {% if article.image %}
+                    <img src="{{ article.image.url }}" class="card-img-top"> {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ article.titre }}</h5>
+                        <p class="card-text">{{ article.contenu|truncatechars:120 }}</p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">Aucun article pour le moment.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- FORMATIONS -->
+    <section class="container mt-5">
+        <h2 class="mb-4">📚 Formations disponibles</h2>
+        <div class="row">
+            {% for cours in cours %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    {% if cours.image %}
+                    <img src="{{ cours.image.url }}" class="card-img-top"> {% endif %}
+                    <div class="card-body">
+                        <h5>{{ cours.titre }}</h5>
+                        <p>{{ cours.description|truncatechars:120 }}</p>
+                        <p class="fw-bold">Prix : {{ cours.prix }} XOF</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- PRODUITS -->
+    <section class="container mt-5 mb-5">
+        <h2 class="mb-4">🛍️ Produits</h2>
+        <div class="row">
+            {% for produit in produits %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    {% if produit.image %}
+                    <img src="{{ produit.image.url }}" class="card-img-top"> {% endif %}
+                    <div class="card-body">
+                        <h5>{{ produit.nom }}</h5>
+                        <p>{{ produit.description|truncatechars:120 }}</p>
+                        <p class="fw-bold">Prix : {{ produit.prix }} XOF</p>
+
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'ajouter_au_panier' produit.id %}" class="btn btn-primary btn-sm">
+                        Ajouter au panier
+                    </a> {% else %}
+                        <p class="text-muted">Connectez-vous pour acheter</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark text-light text-center py-3">
+        <p class="mb-0">
+            © {{ now|date:"Y" }} Ouedraogo Dominique Savio — Tous droits réservés
+        </p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

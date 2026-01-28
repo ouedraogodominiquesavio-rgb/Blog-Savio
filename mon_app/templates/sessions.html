@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des sessions</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'mon_app/css/style.css' %}">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>📚 Liste des sessions de formation</h1>
+
+        {% if sessions %}
+        <ul class="session-list">
+            {% for session in sessions %}
+            <li class="session-card">
+                <h3>{{ session.cours.titre }}</h3>
+                <p><strong>Date début :</strong> {{ session.date_debut }}</p>
+                <p><strong>Places disponibles :</strong> {{ session.places_disponibles }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="empty">Aucune session disponible.</p>
+        {% endif %}
+
+        <div class="actions">
+            <a href="{% url 'accueil' %}" class="btn-retour">⬅ Retour à l’accueil</a>
+        </div>
+    </div>
+
+</body>
+
+</html>

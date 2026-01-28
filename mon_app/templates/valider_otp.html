@@ -1,0 +1,7 @@
+<h2>Confirmer votre paiement</h2>
+<p>Un OTP a été envoyé à votre email pour valider la commande {{ paiement.commande.id }}</p>
+
+<form method="post">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit">Valider</button>
+</form>
